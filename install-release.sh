@@ -633,11 +633,9 @@ start_xray() {
 
 stop_xray() {
   XRAY_CUSTOMIZE=($(systemctl list-units | grep 'xray@' | awk -F ' ' '{print $1}'))
-  if [[ -z "${XRAY_CUSTOMIZE[@]}" ]]; then
-    local xray_daemon_to_stop=(${XRAY_CUSTOMIZE[@]})
-  fi
+  local xray_daemon_to_stop+=(${XRAY_CUSTOMIZE[@]})
   if systemctl -q is-active xray.service; then
-    local xray_daemon_to_stop+=(xray.service)
+    xray_daemon_to_stop+=(xray.service)
   fi
   XRAY_ACTIVE_SRV=(${xray_daemon_to_stop[@]})
   local srv
